@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>CS465 - SuperQuadric Renderer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Eczar:400,500,600,700,800&amp;subset=devanagari,latin-ext" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../../lib/normalize/normalize.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/base.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/base-context.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/base-context-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/buttons.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/buttons-core.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/buttons-core-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/buttons-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/forms.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/forms-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/forms-nr.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/forms-nr-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/grids.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/grids-core.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/grids-core-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/grids-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/grids-responsive.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/grids-responsive-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/grids-responsive-old-ie.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/grids-responsive-old-ie-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/grids-units.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/grids-units-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-core.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-core-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-dropdown.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-dropdown-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-horizontal.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-horizontal-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-scrollable.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-scrollable-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-skin.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/menus-skin-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/pure.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/pure-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/pure-nr.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/pure-nr-min.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/tables.css">
+  <link rel="stylesheet" type="text/css" href="../../lib/pure/tables-min.css">
+  <link rel="stylesheet" type="text/css" href="../Source/styles.css">
+  <link rel="shortcut icon" href="../../favicon/favicon.ico">
+  <link rel="icon" sizes="16x16 32x32 64x64" href="../../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="196x196" href="../../favicon/favicon-192.png">
+  <link rel="icon" type="image/png" sizes="160x160" href="../../favicon/favicon-160.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="../../favicon/favicon-96.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="../../favicon/favicon-64.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16.png">
+  <link rel="apple-touch-icon" href="../../favicon/favicon-57.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="../../favicon/favicon-114.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="../../favicon/favicon-72.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="../../favicon/favicon-144.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="../../favicon/favicon-60.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="../../favicon/favicon-120.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="../../favicon/favicon-76.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="../../favicon/favicon-152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/favicon-180.png">
+  <meta name="msapplication-TileColor" content="#FFFFFF">
+  <meta name="msapplication-TileImage" content="../../favicon/favicon-144.png">
+  <meta name="msapplication-config" content="../../favicon/browserconfig.xml">
+  <script id="vertexShader" type="x-shader/x-vertex">
+    precision mediump float;
+
+		attribute vec3 vPosition;
+    attribute vec2 vTexCoord;
+    attribute vec3 vNormal;
+
+    varying vec2 fTexCoord;
+    varying vec3 fNormal;
+    varying vec4 fColor;
+    varying float vertexColor;
+    varying vec3 L, N, E;
+
+    uniform mat4 modelMatrix;
+    uniform mat4 viewMatrix;
+    uniform mat4 projectionMatrix;
+
+		void main() {
+      vec3 pos = (viewMatrix * modelMatrix * vec4(vPosition, 1.0)).xyz;
+      vec4 lightPos = vec4(1.0, 1.0, 1.0, 1.0);
+      if(lightPos.w == 0.0) {
+        L = normalize(lightPos.xyz);
+      } else {
+        L = normalize(lightPos.xyz - pos);
+      }
+      E = -normalize(pos);
+      vec3 H = normalize(L + E);
+      N = normalize(mat3(viewMatrix) * mat3(modelMatrix) * vNormal);
+      vec4 ambient = vec4(0.05, 0.05, 0.05, 1.0);
+      float Kd = max(dot(L, N), 0.0);
+      vec4 diffuse = Kd * vec4(1.0, 1.0, 1.0, 1.0);
+      float Ks = pow(max(dot(N, H), 0.0), 6.0);
+      vec4 specular = Ks * vec4(1.0, 1.0, 1.0, 1.0);
+      if(dot(L, N) < 0.0) {
+        specular = vec4(0.0, 0.0, 0.0, 1.0);
+      }
+      fColor = ambient + diffuse +specular;
+
+      fTexCoord = vTexCoord;
+      fNormal = (modelMatrix * vec4(vNormal, 0.0)).xyz;
+			gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vPosition, 1.0);
+		}
+	</script>
+  <script id="fragmentShader" type="x-shader/x-fragment">
+    precision mediump float;
+
+    varying vec2 fTexCoord;
+    varying vec3 fNormal;
+    varying vec4 fColor;
+    varying float vertexColor;
+    varying vec3 L, N, E;
+
+    uniform sampler2D texture;
+    uniform float wireMode;
+
+    void main() {
+      vec3 H = normalize(L + E);
+      vec4 ambient = vec4(0.05, 0.05, 0.05, 1.0);
+      float Kd = max(dot(L, N), 0.0);
+      vec4  diffuse = Kd * vec4(1.0, 1.0, 1.0, 1.0);
+      float Ks = pow(max(dot(N, H), 0.0), 6.0);
+      vec4 specular = Ks * vec4(1.0, 1.0, 1.0, 1.0);
+      if(dot(L, N) < 0.0) {
+        specular = vec4(0.0, 0.0, 0.0, 1.0);
+      }
+      vec4 ffColor = ambient + diffuse + specular;
+      ffColor.a = 1.0;
+      vec4 texel = texture2D(texture, fTexCoord);
+      if(wireMode == 0.0) {
+        gl_FragColor = vec4(fNormal, 1.0);
+      } else {
+        gl_FragColor = vec4(texel.rgb * ffColor.rgb, texel.a);
+      }
+    }
+	</script>
+  <script type="text/javascript" src="ASS3.js"></script>
+  <script type="text/javascript" src="../../lib/cs465/initShaders.js"></script>
+  <script type="text/javascript" src="../../lib/cs465/MV.js"></script>
+  <script type="text/javascript" src="../Source/Cube.js"></script>
+  <script type="text/javascript" src="../Source/Mesh.js"></script>
+  <script type="text/javascript" src="../Source/SuperEllipsoid.js"></script>
+  <script type="text/javascript" src="../Source/SuperToroid.js"></script>
+</head>
+
+<body>
+  <canvas id="render-surface" width="1600" height="800">
+    Your browser doesn't support HTML5 canvas! upgrad.
+  </canvas>
+  <p></p>
+  <form class="pure-form">
+    <fieldset>
+      M Bulge: 0.1 <input id="mbulge" type="range" class="slider" min="0.1" max="20" step="0.01" value="5" /> 20
+      <p>N Bulge: 0.1 <input id="nbulge" type="range" class="slider" min="0.1" max="20" step="0.01" value="5" /> 20
+        <p><button type="button" id="toggleRotation" class="pure button green-button hover-animation-b"> Toggle Rotation </button>
+          <button type="button" id="defcam" class="pure button green-button hover-animation-b"> Default Camera Angle </button>
+          Camera Speed: <input type="number" id="camspd" class="green-input pure-input-rounded" min="1" max="10" step="0.5" value="2" /> <b>[W A S D] & ARROWS control camera</b>
+    </fieldset>
+  </form>
+
+  <img id="crate" src="../Source/crate.png" width="0" height="0" crossorigin="Anonymous"></img>
+  <img id="rainbow" src="../Source/rainbowWrap.png" width="0" height="0" crossorigin="Anonymous"></img>
+  <img id="rainbow2" src="../Source/rainbowWrap2.png" width="0" height="0" crossorigin="Anonymous"></img>
+  <img id="rays" src="../Source/rays.png" width="0" height="0" crossorigin="Anonymous"></img>
+  <img id="metal" src="../Source/metal.png" width="0" height="0" crossorigin="Anonymous"></img>
+  <img id="doga" src="../Source/doga.png" width="0" height="0" crossorigin="Anonymous"></img>
+  <img id="simge" src="../Source/simge.png" width="0" height="0" crossorigin="Anonymous"></img>
+  <img id="grass" src="../Source/grassy4.png" width="0" height="0" crossorigin="Anonymous"></img>
+</body>
+
+</html>
