@@ -1,4 +1,4 @@
-# Super Quadric Renderer
+# SuperQuadric Renderer
 
 ## Live Demo:
 See the live demo at: [My Website](http://doga.oruc.ug.bilkent.edu.tr/superQuadric/Executable/ASS3.html)
