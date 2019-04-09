@@ -12,7 +12,7 @@ Application to render realistic parametric superquadric surfaces. Written using 
   * User settable M-N Bulge values.
   * Free camera.(Not actually free, more like almost free)
   
-## Dependancies: 
+## Dependencies: 
   * Ed Angel & David Schreiner's MV.js and initShaders.js
 
 ## Instructions:
