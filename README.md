@@ -3,7 +3,7 @@
 ## Live Demo:
 See the live demo at: [My Website](http://doga.oruc.ug.bilkent.edu.tr/superQuadric/Executable/ASS3.html)
 
-An ant animator. Written using plain WebGL. Draws a terrain and an ant over it. Can use WASD and arrow keys to move camera.
+Application to render realistic parametric superquadric surfaces. Written using plain WebGL. Draws 2 superellipsoid and 2 supertoroid. 2 of the 4 renders are in wireframe, the rest are texture mapped.
 
 ## Features:
   * Realistic Rendering of Parametric Superquadric Surfaces.
