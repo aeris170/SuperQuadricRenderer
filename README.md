@@ -1,7 +1,7 @@
 # SuperQuadric Renderer
 
 ## Live Demo:
-See the live demo at: [My Website](http://doga.oruc.ug.bilkent.edu.tr/superQuadric/Executable/ASS3.html)
+See the live demo at: [My Website](https://aeris170.github.io/archive/superQuadric/Executable/ASS3.html)
 
 Application to render realistic parametric superquadric surfaces. Written using plain WebGL. Draws 2 superellipsoid and 2 supertoroid. 2 of the 4 renders are in wireframe, the rest are texture mapped.
 
